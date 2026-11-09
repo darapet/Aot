@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { renderHome, services, stages, students } from '../src/vanilla-view.js';
+import { portalView, authView } from '../src/portal-view.js';
+const state={view:'home',auth:'',otp:false,selected:[],notice:'',menu:false,activeStage:0,adminStages:students.map(s=>s[4]),checklists:{},sentContact:false,appData:{name:'Test Student',email:'test@example.com',utme:'300',year:'2026',olevel:'English B2',school:'Uni',course:'Law',second:''}};
+test('public page preserves sections, estimator and contact paths',()=>{globalThis.window={AOTStages:stages,AOTStudents:students};const html=renderHome(state);for(const token of ['id="services"','id="estimator"','id="tracking"','id="school-admin"','id="contact"','data-toggle="tutoring"','data-wa=','data-page="admin"'])assert.ok(html.includes(token),`missing ${token}`);assert.equal(services.length,4);});
+test('student dashboard and app form render usable controls',()=>{state.view='student';let html=portalView(state);assert.match(html,/Your admission journey/);assert.equal((html.match(/data-stage=/g)||[]).length,4);state.view='application';html=portalView(state);for(const name of ['name','email','utme','year','olevel','school','course','second'])assert.ok(html.includes(`name="${name}"`));assert.match(html,/Test Student/);});
+test('admin preview and login/register remain explicitly demo',()=>{state.view='admin';assert.match(portalView(state),/Applicant workspace/);assert.equal((portalView(state).match(/data-admin-stage=/g)||[]).length,3);state.auth='register';assert.match(authView(state),/Create your account/);assert.match(authView(state),/Preview only/);});
+test('runtime has no React, TypeScript or build framework references',async()=>{for(const f of ['index.html','src/app.js','src/vanilla-view.js','src/portal-view.js']){const text=await readFile(new URL(`../${f}`,import.meta.url),'utf8');assert.doesNotMatch(text,/react-dom|from ['"]react|\.tsx\b|import\.meta\.env|vite/i,`${f} has forbidden runtime dependency`);}});

@@ -1,12 +1,13 @@
-# AOT Student Portal MVP
+# AOT student portal
 
-Responsive student-services site and portal foundation built with React, TypeScript and Vite.
+Responsive student-services site and portal preview built with native HTML, CSS, and JavaScript. No framework, TypeScript, package installation, or build step is required at runtime.
 
-## Local development
+## Run locally
 
-1. Install Node.js 20.19+ or 22.12+.
-2. Run `npm install`.
-3. Copy `.env.example` to `.env.local` and optionally add `VITE_WHATSAPP_NUMBER` with country code and digits only.
-4. Run `npm run dev`.
+Use Node.js 18+ and run `npm start`, then visit the local URL printed by the server. For development without Node, serve this directory with any static HTTP server.
 
-The MVP is a frontend-only preview with illustrative content and interactive client-side controls. It includes public service pages and estimator, student dashboard and application form, admin workspace shell, contact-to-WhatsApp message builder, and registration/login screens. No backend or live integrations are connected. Demo rows and progression are not live records. Admission chance is intentionally not calculated. Official institution requirements, cutoffs and a validated calculation method would be needed before adding it.
+Set `AOT_WHATSAPP_NUMBER` in the page as `window.AOT_WHATSAPP_NUMBER = '234...'` before `src/app.js` to enable direct WhatsApp links. Without a configured number, the page copies the prepared message where browser permissions allow it.
+
+The site includes the public services, package estimator, demo admission tracking, student dashboard and application form, admin preview, responsive navigation, login/register preview, and contact-to-WhatsApp interactions. No backend or live integrations are connected. Demo rows and progression are illustrative, admin changes and file selection remain local, and admission chance is intentionally not calculated without verified institution requirements and a validated method.
+
+Run `npm test` for lightweight renderer and static-runtime checks.
