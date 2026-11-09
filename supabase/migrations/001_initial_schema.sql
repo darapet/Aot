@@ -308,3 +308,11 @@ grant insert on public.tutoring_requests, public.research_requests to authentica
 grant select, insert, update, delete on public.leads, public.school_enquiries to authenticated;
 grant select, insert, update, delete on public.tutoring_requests, public.research_requests to authenticated;
 grant select, insert, update, delete on public.packages, public.testimonials, public.site_settings to authenticated;
+
+
+-- Restrict helper-function execution. RLS policies call is_admin() as authenticated.
+revoke execute on function public.is_admin() from public, anon;
+grant execute on function public.is_admin() to authenticated;
+
+-- This function is invoked only by the auth.users insert trigger.
+revoke execute on function public.handle_new_user() from public, anon, authenticated;
